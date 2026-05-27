@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Exo+2:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap');
 
 :root {
   --color-bg: #05090f;
@@ -9,8 +9,8 @@
   --color-text: #e8f4f8;
   --color-text-muted: #4a7a8a;
 
-  --font-body: 'Segoe UI', system-ui, sans-serif;
-  --font-heading: 'Orbitron', 'Exo 2', sans-serif;
+  --font-body: 'Exo 2', system-ui, sans-serif;
+  --font-heading: 'Exo 2', system-ui, sans-serif;
 
   --radius-sm: 4px;
   --radius-md: 8px;
