@@ -112,6 +112,59 @@ A web application that allows users to listen to NASA space image sonifications 
 
 ---
 
+## Frontend Architecture
+
+### MVVM Pattern
+The frontend follows an MVVM (Model-View-ViewModel) architecture:
+- Each main page has a dedicated custom hook that acts as its ViewModel, containing all logic and state for that page
+- The page component itself is purely presentational — it receives state and functions from its hook and passes them down to children
+- Child components receive everything they need via props; they do not fetch or derive their own data if it can come from the parent hook
+
+### Component & Hook Rules
+- **Reuse components wherever possible.** If two pages need the same UI element, it lives in a shared `components/` folder
+- **Small components** may contain minimal local state only if the logic is purely self-contained and has no use outside that component (e.g. a hover state, a toggle)
+- **Complex components** that require substantial logic (e.g. the image drop/upload zone) get their own dedicated hook used exclusively by that component
+- Page-level hooks handle all data fetching, Supabase calls, audio logic, and derived state for their respective page
+
+### useEffect Policy
+- `useEffect` should be avoided unless absolutely necessary
+- Acceptable uses: initializing the Tone.js audio context on mount, setting up event listeners with no reactive alternative, syncing with a non-React external system
+- Never use `useEffect` to derive state from other state — use `useMemo` instead
+- Never use `useEffect` to respond to user events — use event handlers instead
+
+### Documentation
+- Every function, interface, and type must have a concise JSDoc comment above it
+- Comments should describe **what** it does and **why** if non-obvious — not restate the code
+- Keep it brief: one to two lines for the description is ideal, three max
+- All function parameters must be documented with `@param` and a short description
+- Example:
+```ts
+/**
+ * Maps a pixel row index to a frequency in the given scale.
+ * @param row - The pixel row index from the processed canvas
+ * @param totalRows - Total number of sampled rows in the image
+ * @param scale - Sorted array of frequencies to map onto
+ */
+const getFrequencyFromRow = (row: number, totalRows: number, scale: number[]): number => { ... }
+
+/** Represents a single saved sonification clip in the library. */
+interface Clip { ... }
+```
+
+### Formatting
+- Prettier is used for all source files under `src/`
+- A `.prettierrc` config file must be present at the project root
+- Prettier runs automatically on save (via editor integration) and as a pre-commit check
+- All contributors must have the Prettier extension installed in their editor
+
+### Styling
+- CSS Modules for all styling (`PageName.module.css`)
+- One CSS module file per page and per component
+- No global inline styles beyond truly dynamic values (e.g. a scan line `left` percentage driven by playback progress)
+- Design tokens (colors, spacing, typography) defined as CSS custom properties in a single `global.css`
+
+---
+
 ## Non-Functional Requirements
 - Mobile-first responsive layout; installable as PWA on iOS via Add to Home Screen
 - No server-side audio processing — all sonification runs in the browser

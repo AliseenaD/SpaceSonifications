@@ -11,7 +11,6 @@ node_modules
 dist
 dist-ssr
 *.local
-mockups/
 
 # Editor directories and files
 .vscode/*
@@ -23,4 +22,3 @@ mockups/
 *.njsproj
 *.sln
 *.sw?
-CLAUDE.md
